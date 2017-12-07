@@ -8,7 +8,6 @@ class InputUrl extends Component {
   };
   onSubmit = e => {
     e.preventDefault();
-    console.log(this.props);
     this.props.uploadPhoto(this.state.photoUrl);
   };
 
@@ -17,8 +16,6 @@ class InputUrl extends Component {
   };
 
   render() {
-    console.log(this.state);
-    console.log(this.props);
     return (
       <form onSubmit={this.onSubmit.bind(this)}>
         <h3>Upload through URL</h3>
