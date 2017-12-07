@@ -37,9 +37,9 @@ class Canvas2 extends Component {
         let size = 30;
         let xx = x - size / 2;
         let yy = y - size / 2;
-        // let imageData = ctx.getImageData(xx, yy, size, size);
-        // console.log(imageData);
-        let filtered = StackBlur.imageDataRGB(ctx.getImageData(0,0, this.state.WIDTH, this.state.HEIGHT), xx, yy, size, size); //add effect
+        let imageData = ctx.getImageData(xx, yy, size, size);
+        console.log(imageData);
+        let filtered = StackBlur.imageDataRGBA(imageData, xx, yy, size, size); //add effect
 
         this.image_round(
           ctx,
