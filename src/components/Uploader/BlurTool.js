@@ -32,7 +32,7 @@ class BlurTool extends Component {
     const yy = y > size ? y - size / 2 : 0;
     const imageData = ctx.getImageData(xx, yy, size, size);
     const filtered = StackBlur.imageDataRGBA(imageData, xx, yy, size, size, 30);
-    this.refs.canvas_test.getContext('2d').putImageData(filtered, 0, 0);
+    // this.refs.canvas_test.getContext('2d').putImageData(filtered, 0, 0);
 
     ctx_front.putImageData(filtered, xx, yy);
 
@@ -49,6 +49,10 @@ class BlurTool extends Component {
   render() {
     return (
       <div>
+        <div>
+          <canvas width={50} height={50} ref="canvas_before" />
+          <canvas width={50} height={50} ref="canvas_after" />
+        </div>
         <div id="canvas_wrapper">
           <canvas width={500} height={500} ref="canvas" />
           <canvas
@@ -59,9 +63,6 @@ class BlurTool extends Component {
             onMouseUp={() => this.setState({ isMousedown: false })}
             onMouseMove={e => this.state.isMousedown && this.blurPhoto(e)}
           />
-          <div>
-            <canvas width={50} height={50} ref="canvas_test" />
-          </div>
         </div>
       </div>
     );
