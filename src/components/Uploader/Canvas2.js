@@ -7,7 +7,7 @@ class Canvas2 extends Component {
     super(props);
     this.state = {
       mousedown: false,
-      WIDTH: 500,
+      WIDTH: 50,
       HEIGHT: 500
     };
   }
@@ -15,8 +15,8 @@ class Canvas2 extends Component {
   componentDidMount() {
     const { canvas } = this.refs;
     console.log(canvas.width);
-    this.setState({ WIDTH: canvas.width, HEIGHT: canvas.height });
-    console.log(this.state);
+    this.setState({ WIDTH: 500, HEIGHT: canvas.height }, console.log(this.state));
+    
   }
 
   componentWillUpdate() {

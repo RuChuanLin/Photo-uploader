@@ -4,6 +4,10 @@ import Cropper from './Cropper';
 import Canvas from './Canvas';
 import Canvas2 from './Canvas2';
 import InputUrl from './InputUrl';
+import BlurTool from './BlurTool';
+import KonvaTest from './KonvaTest';
+import Blur from './Blur';
+import { uploadPhoto } from '../../actions';
 
 const src = 'https://i.imgur.com/R3zp0nP.jpg';
 class Uploader extends Component {
@@ -13,11 +17,10 @@ class Uploader extends Component {
       src,
       cropResult: null
     };
-    // this.cropImage = this.cropImage.bind(this);
-    // this.onChange = this.onChange.bind(this);
-    // this.useDefaultImage = this.useDefaultImage.bind(this);
   }
-
+  componentWillMount() {
+    this.props.uploadPhoto(src);
+  }
   // onChange(e) {
   //   e.preventDefault();
   //   let files;
@@ -42,14 +45,15 @@ class Uploader extends Component {
   //   });
   // }
 
-  useDefaultImage() {
-    this.setState({ src });
-  }
   render() {
-    console.log(this.props);
+    if (!this.props.photo) {
+      return <div>Loading...</div>;
+    }
     return (
       <div>
-        <Canvas2 />
+        {/* <Blur photo={this.props.photo} /> */}
+        <BlurTool photo={this.props.photo} />
+        {/* <Canvas2 /> */}
         {/* <Canvas /> */}
         <InputUrl />
         <Cropper />
@@ -103,4 +107,4 @@ function mapStateToProps(state) {
   return { photo: state.photo };
 }
 
-export default connect(mapStateToProps)(Uploader);
+export default connect(mapStateToProps, { uploadPhoto })(Uploader);
