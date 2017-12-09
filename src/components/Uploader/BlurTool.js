@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import StackBlur from 'stackblur-canvas';
 
 class BlurTool extends Component {
@@ -54,9 +55,9 @@ class BlurTool extends Component {
           <canvas width={50} height={50} ref="canvas_after" />
         </div>
         <div id="canvas_wrapper">
-          <canvas width={500} height={500} ref="canvas" />
+          <canvas width={900} height={500} ref="canvas" />
           <canvas
-            width={500}
+            width={900}
             height={500}
             ref="canvas_front"
             onMouseDown={() => this.setState({ isMousedown: true })}
@@ -69,4 +70,6 @@ class BlurTool extends Component {
   }
 }
 
-export default BlurTool;
+const mapStateToProps = state => ({ photo: state.photo });
+
+export default connect(mapStateToProps)(BlurTool);
