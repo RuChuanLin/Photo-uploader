@@ -5,7 +5,9 @@ class Header extends Component {
   render() {
     return (
       <div>
-        <Link to="/blurtool">link</Link>
+        <Link to="/">Home</Link>
+        <Link to="/blurtool">blur</Link>
+        <Link to="/cropper">crop</Link>
       </div>
     );
   }

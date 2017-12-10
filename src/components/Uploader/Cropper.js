@@ -32,7 +32,7 @@ class Crop extends Component {
             float: 'left'
           }}
           ref="cropper"
-          src={this.props.photo}
+          src={this.props.photo.dataURL}
           crop={this._crop}
           guides={false}
           viewMode={1}
@@ -47,9 +47,9 @@ class Crop extends Component {
             overflow: 'hidden'
           }}
         >
+          <button onClick={() => this.onCropClick()}>OK</button>
           <h3>Preview</h3>
           <img src={this.state.dataURL} alt="image" />
-          <button onClick={() => this.onCropClick()}>OK</button>
         </div>
       </div>
     );

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import StackBlur from 'stackblur-canvas';
+import { uploadPhoto, updatePhoto } from '../../actions';
 
 class BlurTool extends Component {
   state = {
     isMousedown: false,
     WIDTH: 0,
     HEIGHT: 0,
-    photo: this.props.photo
+    photo: this.props.photo.dataURL
   };
   componentDidMount() {
     const { canvas } = this.refs;
@@ -47,6 +48,15 @@ class BlurTool extends Component {
     ctx.drawImage(canvas_front, xx, yy, size, size, xx, yy, size, size);
   }
 
+  onSubmitClick = () => {
+    const { canvas } = this.refs;
+    const obj = Object.assign({}, this.props.photo, {
+      dataURL: canvas.toDataURL('image/jpeg')
+    });
+    console.log(obj);
+    this.props.updatePhoto(obj);
+  };
+
   render() {
     return (
       <div>
@@ -65,6 +75,7 @@ class BlurTool extends Component {
             onMouseMove={e => this.state.isMousedown && this.blurPhoto(e)}
           />
         </div>
+        <button onClick={this.onSubmitClick.bind(this)}>送出</button>
       </div>
     );
   }
@@ -72,4 +83,4 @@ class BlurTool extends Component {
 
 const mapStateToProps = state => ({ photo: state.photo });
 
-export default connect(mapStateToProps)(BlurTool);
+export default connect(mapStateToProps, { uploadPhoto, updatePhoto })(BlurTool);
