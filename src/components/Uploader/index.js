@@ -5,7 +5,7 @@ import PhotoList from './PhotoList';
 import InputUrl from './InputUrl';
 import InputLocal from './InputLocal';
 
-import img from '../../img/sakura_flowers-wallpaper-1920x1080.jpg';
+import img from '../../img/line.png';
 
 class Uploader extends Component {
   state = { originPhoto: this.props.photo };
@@ -14,7 +14,7 @@ class Uploader extends Component {
     this.props.uploadPhoto(img);
   };
 
-  onPostClick = (isNewPhoto) => {
+  onPostClick = isNewPhoto => {
     this.props.postPhoto(this.props.photo, isNewPhoto);
   };
 

@@ -10,7 +10,6 @@ class PhotoList extends Component {
   }
 
   componentWillUpdate() {
-    console.log(this.props.photo);
     if (!this.props.photo) {
       return;
     }
@@ -22,7 +21,6 @@ class PhotoList extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div>
         {this.props.photoList.map(({ id, thumbnail, type }) => (

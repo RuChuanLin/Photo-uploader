@@ -58,17 +58,18 @@ class BlurTool extends Component {
   };
 
   render() {
+    const { width, height } = this.props.photo;
     return (
       <div>
         <div>
           <canvas width={50} height={50} ref="canvas_before" />
           <canvas width={50} height={50} ref="canvas_after" />
         </div>
-        <div id="canvas_wrapper">
-          <canvas width={900} height={500} ref="canvas" />
+        <div id="canvas_wrapper" style={{ height: height }}>
+          <canvas width={width} height={height} ref="canvas" />
           <canvas
-            width={900}
-            height={500}
+            width={width}
+            height={height}
             ref="canvas_front"
             onMouseDown={() => this.setState({ isMousedown: true })}
             onMouseUp={() => this.setState({ isMousedown: false })}

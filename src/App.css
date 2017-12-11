@@ -2,7 +2,6 @@
   position: relative;
   margin: 0 157px 0 105px;
   overflow: hidden;
-  height: calc(100vh - 40px);
 }
 #canvas_wrapper canvas {
   border: 1px solid #393939;

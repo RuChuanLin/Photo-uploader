@@ -70,7 +70,6 @@ export const postPhoto = (photoObj, isNewPhoto) => async dispatch => {
     photoObj,
     isNewPhoto
   });
-  console.log(res);
   dispatch({
     type: UPDATE_PHOTOLIST,
     payload: res.data.data

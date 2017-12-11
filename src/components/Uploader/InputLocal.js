@@ -6,7 +6,6 @@ class InputLocal extends Component {
   state = { dataURL: '', type: '' };
 
   onInputChange = async e => {
-    console.log(e.target.files[0]);
     const type = e.target.files[0].type.split('/')[1];
     const reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);

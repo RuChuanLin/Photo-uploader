@@ -9,7 +9,6 @@ import Photo from '../../model/Photo';
 class Crop extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
     this.state = { dataURL: this.props.photo.dataURL };
     this._crop = this._crop.bind(this);
   }
@@ -25,12 +24,14 @@ class Crop extends Component {
     this.props.updatePhoto(newPhoto);
   }
   render() {
+    const { height, width } = this.props.photo;
     return (
-      <div style={{ height: 400 }}>
+      <div style={{ height: height }}>
         <Cropper
           style={{
             height: '100%',
-            width: 400,
+            width: width,
+            maxWidth: 900,
             display: 'inline-block',
             float: 'left'
           }}
