@@ -1,17 +1,29 @@
-import { UPLOAD_PHOTO, UPDATE_PHOTO, SAVE_PHOTO, FETCH_PHOTO } from './types';
+import {
+  UPLOAD_PHOTO,
+  UPDATE_PHOTO,
+  SAVE_PHOTO,
+  FETCH_PHOTO,
+  UPLOAD_PHOTO_LOCALLY,
+  MAKE_THUMBNAIL,
+  INIT_PHOTOLIST,
+  UPDATE_PHOTOLIST
+} from './types';
 import axios from 'axios';
 import resizebase64 from 'resize-base64';
 
 import Photo from '../model/Photo';
+
+const generateId = () =>
+  Math.random()
+    .toString(36)
+    .slice(-12);
 
 export const uploadPhoto = photoURL => async dispatch => {
   const res = await axios.get(photoURL, {
     responseType: 'arraybuffer',
     crossdomain: true
   });
-  const id = Math.random()
-    .toString(36)
-    .slice(-12);
+  const id = generateId();
   let type = res.headers['content-type'].split(';')[0];
   type = type.split('/')[1];
   dispatch({
@@ -27,6 +39,15 @@ export const uploadPhoto = photoURL => async dispatch => {
   });
 };
 
+export const uploadPhotoLocally = ({ dataURL, type }) => dispatch => {
+  const id = generateId();
+  const photo = new Photo({ id, type, dataURL });
+  dispatch({
+    type: UPLOAD_PHOTO_LOCALLY,
+    payload: photo
+  });
+};
+
 export const updatePhoto = dataObj => {
   return {
     type: UPDATE_PHOTO,
@@ -34,10 +55,26 @@ export const updatePhoto = dataObj => {
   };
 };
 
-export const postPhoto = photoObj => async dispatch => {
+export const makingThumbnail = photoObj => dispatch => {
   const thumbnail = resizebase64(photoObj.getPhotoDataURL(), 50, 25);
   photoObj.setThumbnail(thumbnail);
-  const res = await axios.post(`http://localhost:3003/photoes`, photoObj);
+  dispatch({
+    type: MAKE_THUMBNAIL,
+    payload: new Photo({ ...photoObj, thumbnail })
+  });
+};
+
+export const postPhoto = (photoObj, isNewPhoto) => async dispatch => {
+  makingThumbnail(photoObj)(dispatch);
+  const res = await axios.post(`http://localhost:3003/photoes`, {
+    photoObj,
+    isNewPhoto
+  });
+  console.log(res);
+  dispatch({
+    type: UPDATE_PHOTOLIST,
+    payload: res.data.data
+  });
 };
 
 export const fetchPhoto = (id, type) => async dispatch => {
@@ -49,9 +86,18 @@ export const fetchPhoto = (id, type) => async dispatch => {
     type,
     dataURL: `data:image/${type};base64,${res.data}`
   });
-  console.log(newPhoto);
   dispatch({
     type: FETCH_PHOTO,
     payload: newPhoto
+  });
+};
+
+export const initPhotoList = () => async dispatch => {
+  const res = await axios.get(`http://localhost:3000/photoes`, {
+    crossdomain: true
+  });
+  dispatch({
+    type: INIT_PHOTOLIST,
+    payload: res.data
   });
 };

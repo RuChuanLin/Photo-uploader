@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/photoes', (req, res) => {
-  const { id, type, dataURL, thumbnail } = req.body;
+  const { photoObj: { id, type, dataURL, thumbnail }, isNewPhoto } = req.body;
   const base64Data = dataURL.replace(`data:image/${type};base64,`, '');
 
   require('fs').writeFile(
@@ -37,15 +37,38 @@ app.post('/photoes', (req, res) => {
       }
     }
   );
-  axios
-    .post(`http://localhost:3000/photoes`, {
+
+  if (isNewPhoto) {
+    axios.post(`http://localhost:3000/photoes`, {
       id,
       type,
       thumbnail
-    })
-    .then(res => {
-      console.log(res);
     });
+  } else {
+    axios.patch(`http://localhost:3000/photoes/${id}`, {
+      id,
+      type,
+      thumbnail
+    });
+  }
+
+  axios.get(`http://localhost:3000/photoes`).then(photoList => {
+    // 解circular reference
+    let cache = [];
+    let obj = JSON.stringify(photoList, function(key, value) {
+      if (typeof value === 'object' && value !== null) {
+        if (cache.indexOf(value) !== -1) {
+          // Circular reference found, discard key
+          return;
+        }
+        // Store value in our collection
+        cache.push(value);
+      }
+      return value;
+    });
+    cache = null;
+    res.send(obj);
+  });
 });
 
 app.get('/fetchPhoto', (req, res) => {

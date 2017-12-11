@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { fetchPhoto } from '../../actions';
+import { fetchPhoto, initPhotoList } from '../../actions';
 
 class PhotoList extends Component {
-  state = { list: [] };
-
   componentWillMount() {
-    axios.get(`http://localhost:3000/photoes`).then(({ data }) => {
-      this.setState({ list: data });
-    });
+    this.props.initPhotoList();
+  }
+
+  componentWillUpdate() {
+    console.log(this.props.photo);
+    if (!this.props.photo) {
+      return;
+    }
+    // this.state.list.push(this.props.photo.getPhotoData());
   }
 
   onFetchClick = (id, type) => {
@@ -18,9 +22,10 @@ class PhotoList extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <div>
-        {this.state.list.map(({ id, thumbnail, type }) => (
+        {this.props.photoList.map(({ id, thumbnail, type }) => (
           <img
             key={id}
             src={thumbnail}
@@ -33,4 +38,11 @@ class PhotoList extends Component {
   }
 }
 
-export default connect(null, { fetchPhoto })(PhotoList);
+const mapStateToProps = state => ({
+  photo: state.photo,
+  photoList: state.photoList
+});
+
+export default connect(mapStateToProps, { fetchPhoto, initPhotoList })(
+  PhotoList
+);

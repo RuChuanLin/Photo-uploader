@@ -4,12 +4,13 @@ import Cropper from 'react-cropper';
 import { updatePhoto } from '../../actions/index';
 import { connect } from 'react-redux';
 import StackBlur from 'stackblur-canvas';
+import Photo from '../../model/Photo';
 
 class Crop extends Component {
   constructor(props) {
     super(props);
     console.log(this.props);
-    this.state = { dataURL: this.props.photo };
+    this.state = { dataURL: this.props.photo.dataURL };
     this._crop = this._crop.bind(this);
   }
 
@@ -19,7 +20,9 @@ class Crop extends Component {
     });
   }
   onCropClick() {
-    this.props.updatePhoto(this.state.dataURL);
+    const newPhoto = this.props.photo;
+    newPhoto.dataURL = this.state.dataURL;
+    this.props.updatePhoto(newPhoto);
   }
   render() {
     return (

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import StackBlur from 'stackblur-canvas';
 import { uploadPhoto, updatePhoto } from '../../actions';
+import Photo from '../../model/Photo';
 
 class BlurTool extends Component {
   state = {
@@ -50,11 +51,10 @@ class BlurTool extends Component {
 
   onSubmitClick = () => {
     const { canvas } = this.refs;
-    const obj = Object.assign({}, this.props.photo, {
-      dataURL: canvas.toDataURL('image/jpeg')
-    });
-    console.log(obj);
-    this.props.updatePhoto(obj);
+    const newPhoto = this.props.photo;
+    newPhoto.dataURL = canvas.toDataURL(`image/${this.props.photo.type}`);
+
+    this.props.updatePhoto(newPhoto);
   };
 
   render() {
