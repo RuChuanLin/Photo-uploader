@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import StackBlur from 'stackblur-canvas';
+import { Link } from 'react-router-dom';
+import { Grid, Image, Header, Button } from 'semantic-ui-react';
 import { uploadPhoto, updatePhoto } from '../../actions';
 import Photo from '../../model/Photo';
 
@@ -15,7 +17,7 @@ class BlurTool extends Component {
     const { canvas } = this.refs;
     this.setState({ WIDTH: canvas.width, HEIGHT: canvas.height });
     const ctx = canvas.getContext('2d');
-    const image = new Image();
+    const image = new window.Image();
     image.src = this.state.photo;
     image.onload = () => {
       ctx.drawImage(image, 0, 0, this.state.WIDTH, this.state.HEIGHT);
@@ -55,29 +57,39 @@ class BlurTool extends Component {
     newPhoto.dataURL = canvas.toDataURL(`image/${this.props.photo.type}`);
 
     this.props.updatePhoto(newPhoto);
+    this.props.history.push('/edit');
   };
 
   render() {
     const { width, height } = this.props.photo;
     return (
-      <div>
-        <div>
-          <canvas width={50} height={50} ref="canvas_before" />
-          <canvas width={50} height={50} ref="canvas_after" />
-        </div>
-        <div id="canvas_wrapper" style={{ height: height }}>
-          <canvas width={width} height={height} ref="canvas" />
-          <canvas
-            width={width}
-            height={height}
-            ref="canvas_front"
-            onMouseDown={() => this.setState({ isMousedown: true })}
-            onMouseUp={() => this.setState({ isMousedown: false })}
-            onMouseMove={e => this.state.isMousedown && this.blurPhoto(e)}
-          />
-        </div>
-        <button onClick={this.onSubmitClick.bind(this)}>送出</button>
-      </div>
+      <Grid>
+        <Grid.Column computer={16}>
+          <Grid.Column computer={16}>
+            <Link to="/edit">
+              <Button positive onClick={this.onSubmitClick.bind(this)}>
+                輯編完成！
+              </Button>
+            </Link>
+          </Grid.Column>
+        </Grid.Column>
+        <Grid.Column computer={1} />
+
+        <Grid.Column computer={10}>
+          <Header>編輯區</Header>
+          <div id="canvas_wrapper" style={{ height: height }}>
+            <canvas width={width} height={height} ref="canvas" />
+            <canvas
+              width={width}
+              height={height}
+              ref="canvas_front"
+              onMouseDown={() => this.setState({ isMousedown: true })}
+              onMouseUp={() => this.setState({ isMousedown: false })}
+              onMouseMove={e => this.state.isMousedown && this.blurPhoto(e)}
+            />
+          </div>
+        </Grid.Column>
+      </Grid>
     );
   }
 }

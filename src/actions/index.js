@@ -21,7 +21,9 @@ const generateId = () =>
 export const uploadPhoto = photoURL => async dispatch => {
   const res = await axios.get(photoURL, {
     responseType: 'arraybuffer',
-    crossdomain: true
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    }
   });
   const id = generateId();
   let type = res.headers['content-type'].split(';')[0];
@@ -76,10 +78,15 @@ export const postPhoto = (photoObj, isNewPhoto) => async dispatch => {
   });
 };
 
-export const fetchPhoto = (id, type) => async dispatch => {
-  const res = await axios.get(
-    `http://localhost:3003/fetchPhoto?id=${id}&type=${type}`
+export const fetchPhoto = (id, type, { height, width }) => async dispatch => {
+  console.log(
+    `http://localhost:3003/fetchPhoto?id=${id}&type=${type}&height=${height}&width=${width}`
   );
+  const res = await axios.get(
+    `http://localhost:3003/fetchPhoto?id=${id}&type=${type}&height=${height}&width=${width}`,
+    { headers: { 'Access-Control-Allow-Origin': '*' } }
+  );
+  console.log(res);
   const newPhoto = new Photo({
     id,
     type,
@@ -93,7 +100,7 @@ export const fetchPhoto = (id, type) => async dispatch => {
 
 export const initPhotoList = () => async dispatch => {
   const res = await axios.get(`http://localhost:3000/photoes`, {
-    crossdomain: true
+    headers: { 'Access-Control-Allow-Origin': '*' }
   });
   dispatch({
     type: INIT_PHOTOLIST,

@@ -23,6 +23,7 @@ class InputLocal extends Component {
       <form>
         <h3>本地上傳</h3>
         <input type="file" onChange={this.onInputChange} />
+          
       </form>
     );
   }

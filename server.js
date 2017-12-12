@@ -3,11 +3,11 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('./webpack.config');
+const images = require('images');
 const app = new (require('express'))();
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const port = 3003;
-
 const compiler = webpack(config);
 app.use(
   webpackDevMiddleware(compiler, {
@@ -72,15 +72,46 @@ app.post('/photoes', (req, res) => {
 });
 
 app.get('/fetchPhoto', (req, res) => {
-  const { id, type } = req.query;
+  let { id, type, height, width } = req.query;
   const filename = `${id}.${type}`;
+  console.log(height, width);
 
-  res.send(
-    new Buffer(
-      require('fs').readFileSync(path.join(__dirname, './assets', filename)),
-      'binary'
-    ).toString('base64')
-  );
+  if (height === '' || typeof +height !== 'number') {
+    height = 0;
+  }
+  if (height === '' || typeof +width !== 'number') {
+    width = 0;
+  }
+  height = +height;
+  width = +width;
+  if (width === 0 && height === 0) {
+    res.send(
+      new Buffer(
+        require('fs').readFileSync(path.join(__dirname, './assets', filename)),
+        'binary'
+      ).toString('base64')
+    );
+    return;
+  } else {
+    const img = images(path.join(__dirname, './assets', filename));
+    console.log(img.width, img.height);
+    const imgRatio = img.height / img.width;
+    if (height) {
+      if (!width) {
+        width = height / imgRatio;
+      }
+    } else {
+      height = width * imgRatio;
+    }
+    console.log(width, height);
+    res.send(
+      img
+        .resize(width, height)
+        .encode(type, { operation: 50 })
+        .toString('base64')
+    );
+  }
+
   // const extension = type.split('/')[1];
   // const base64Data = dataURL.replace(`data:${type};base64,`, '');
 

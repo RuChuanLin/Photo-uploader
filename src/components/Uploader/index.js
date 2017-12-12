@@ -5,7 +5,6 @@ import PhotoList from './PhotoList';
 import InputUrl from './InputUrl';
 import InputLocal from './InputLocal';
 
-import img from '../../img/line.png';
 
 class Uploader extends Component {
   state = { originPhoto: this.props.photo };
@@ -18,14 +17,10 @@ class Uploader extends Component {
     this.props.postPhoto(this.props.photo, isNewPhoto);
   };
 
-  onPatchClick = () => {
-    this.props.patchPhoto(this.props.photo);
-  };
+
 
   render() {
-    const isNewPhoto = this.props.photoList.every(
-      ({ id }) => id !== this.props.photo.id
-    );
+    
 
     return (
       <div>

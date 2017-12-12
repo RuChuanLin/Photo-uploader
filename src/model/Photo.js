@@ -4,6 +4,8 @@ export default class Photo {
     this.type = type;
     this.thumbnail = thumbnail;
     this.dataURL = dataURL;
+    this.height;
+    this.width;
     if (this.dataURL) {
       this.getHW();
     }
@@ -13,6 +15,9 @@ export default class Photo {
   }
   getPhotoDataURL() {
     return this.dataURL;
+  }
+  setPhotoDataURL(dataURL) {
+    this.dataURL = dataURL;
   }
 
   setThumbnail(thumbnail) {
@@ -27,5 +32,19 @@ export default class Photo {
       self.width = i.width;
       self.height = i.height;
     };
+  }
+  setHW({ height, width }) {
+    if (height === undefined && width === undefined) {
+      return;
+    } else if (height === undefined && width) {
+      this.height = width / this.width * this.height;
+      this.width = width;
+    } else if (width === undefined && height) {
+      this.width = height / this.height * this.width;
+      this.height = height;
+    } else {
+      this.width = width;
+      this.height = height;
+    }
   }
 }

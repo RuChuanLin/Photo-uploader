@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { uploadPhoto } from '../../actions';
-
+import { Input, Button, Header } from 'semantic-ui-react';
 class InputUrl extends Component {
   state = {
     photoUrl: ''
@@ -18,12 +18,13 @@ class InputUrl extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit.bind(this)}>
-        <h3>Upload through URL</h3>
-        <input
+        <Header>URL上傳</Header>
+        <Input
           value={this.state.photoUrl}
           onChange={e => this.onInputChange(e.target.value)}
+          placeholder="Search..."
         />
-        <button type="submit">Submit</button>
+        <Button type="submit">Submit</Button>
       </form>
     );
   }
