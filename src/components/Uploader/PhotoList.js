@@ -39,6 +39,7 @@ class PhotoList extends Component {
             <Grid.Column textAlign="center">
               <Header as="h4">高度</Header>
               <Input
+                focus
                 type="number"
                 type="text"
                 value={this.state.height}
@@ -48,6 +49,7 @@ class PhotoList extends Component {
             <Grid.Column textAlign="center">
               <Header as="h4">寬度</Header>
               <Input
+                focus
                 type="text"
                 value={this.state.width}
                 onChange={e => this.setState({ width: e.target.value })}
